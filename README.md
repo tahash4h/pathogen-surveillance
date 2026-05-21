@@ -49,31 +49,51 @@ Examples of issues encountered included:
 - variable formatting standards,
 - and incomplete sample annotations.
 
-Custom processing and filtering logic was developed to identify usable records and prepare them for mapping workflows.
+Custom parsing and filtering workflows were developed to identify usable records and prepare them for geospatial analysis.
 
 ---
 
-## Spatial Mapping
+## Spatial Mapping & Interpretation
 
 After metadata extraction and cleanup, geographic information was transformed into map-compatible datasets for visualization and exploratory analysis.
 
-The mapping stage enabled:
-- spatial clustering analysis,
-- geographic distribution exploration,
-- environmental context inspection,
-- and identification of broad sampling patterns.
+The visualization below represents environmental detections associated with *Bacillus anthracis* pXO1-related sequence signatures across globally distributed samples.
 
-The project emphasized reproducible transformation pipelines between sequence search outputs and geospatial representations.
+![Anthrax Map Preview](images/anthrax_preview.png)
+
+Each plotted point represents a metadata-linked sample location where sequence search results produced measurable matches against the target reference.
+
+The visualization incorporates a **k-mer coverage fraction** metric, which represents the proportion of target k-mers detected within a given sample.
+
+### Why k-mer Coverage Matters
+
+K-mer coverage provides a lightweight but powerful method for estimating how strongly a sample matches a target sequence without requiring full genome alignment.
+
+Higher coverage fractions generally indicate:
+- stronger sequence similarity,
+- greater representation of the target signal,
+- or higher confidence that related genomic material exists within the sample.
+
+Lower values may indicate:
+- weak environmental traces,
+- fragmented detections,
+- low-abundance signal,
+- or partial sequence overlap.
+
+This becomes especially important in large-scale environmental screening workflows, where millions of samples may need to be rapidly searched and ranked before deeper analysis is performed.
 
 ---
 
-## Example Dataset
+## Example Interpretation
 
-One explored example involved *Bacillus anthracis* sequence matches.
+In the example visualization:
+- larger and brighter markers correspond to stronger sequence detection signals,
+- weaker signals appear as smaller/darker detections,
+- and geographic clustering may indicate regions containing environmentally related samples or repositories with enriched matching data.
 
-Sequence search outputs associated with *Bacillus anthracis* were linked against metadata records to extract usable geographic and environmental information. The resulting dataset demonstrated how distributed biological sampling records could be connected back to large-scale sequence search outputs and visualized spatially.
+The figure demonstrates how large-scale sequence search outputs can be transformed into geographically interpretable datasets capable of supporting exploratory pathogen surveillance workflows.
 
-An example visualization generated from this workflow is included in this repository.
+Importantly, the visualization does **not** imply confirmed outbreaks or active environmental presence. Instead, it represents metadata-linked sequence detections derived from indexed biological datasets.
 
 ---
 
@@ -85,6 +105,7 @@ The project primarily centered around:
 - accession relationship handling,
 - geospatial data extraction,
 - coordinate validation,
+- environmental metadata interpretation,
 - and downstream mapping integration.
 
 The work combined concepts from:
@@ -95,8 +116,10 @@ The work combined concepts from:
 
 ---
 
-## Notes
+## Repository Contents
 
-This repository serves as a high-level overview of the project workflow and methodology.
-
-Certain implementation details, datasets, and internal processing steps have intentionally been abstracted.
+```text
+README.md
+anthrax_map.html
+images/
+└── anthrax_preview.png
