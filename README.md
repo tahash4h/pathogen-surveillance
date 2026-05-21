@@ -20,7 +20,7 @@ The workflow focused heavily on metadata integration, normalization, and downstr
 The overall pipeline followed a multi-stage process:
 
 1. Select a pathogen, marker, or genomic target.
-2. Query large-scale sequence indexing/search tools such as MetaGraph.
+2. Query large-scale sequence indexing/search tools such as MetaGraph, Logan, sourmash branchwater.
 3. Retrieve matching accessions from search results.
 4. Cross-reference accessions against associated metadata repositories.
 5. Extract usable attributes such as:
@@ -32,8 +32,6 @@ The overall pipeline followed a multi-stage process:
 6. Normalize inconsistent metadata formats.
 7. Filter incomplete or unusable records.
 8. Map resulting geographic data for downstream analysis and visualization.
-
-This workflow enabled the transition from raw sequence matches to geographically contextualized datasets.
 
 ---
 
@@ -65,61 +63,91 @@ Each plotted point represents a metadata-linked sample location where sequence s
 
 The visualization incorporates a **k-mer coverage fraction** metric, which represents the proportion of target k-mers detected within a given sample.
 
-### Why k-mer Coverage Matters
+---
 
-K-mer coverage provides a lightweight but powerful method for estimating how strongly a sample matches a target sequence without requiring full genome alignment.
+## Understanding the Detection Metrics
 
-Higher coverage fractions generally indicate:
-- stronger sequence similarity,
-- greater representation of the target signal,
-- or higher confidence that related genomic material exists within the sample.
+The mapping workflow did not simply record whether a match existed, it also attempted to quantify *how strongly* a sample matched the target sequence.
 
-Lower values may indicate:
-- weak environmental traces,
-- fragmented detections,
-- low-abundance signal,
-- or partial sequence overlap.
+Several metrics were incorporated into the visualization pipeline:
 
-This becomes especially important in large-scale environmental screening workflows, where millions of samples may need to be rapidly searched and ranked before deeper analysis is performed.
+### Hits
+Represents the total number of matching sequence fragments or k-mers identified for a given sample or location.
+
+Higher hit counts generally indicate:
+- stronger sequence overlap,
+- increased representation of the target signal,
+- or richer supporting sequence evidence.
 
 ---
 
-## Example Interpretation
+### K-mer Coverage Fraction
 
-In the example visualization:
-- larger and brighter markers correspond to stronger sequence detection signals,
-- weaker signals appear as smaller/darker detections,
-- and geographic clustering may indicate regions containing environmentally related samples or repositories with enriched matching data.
+The `avg_kmer_fraction` metric represents the fraction of target k-mers successfully identified within a sample.
 
-The figure demonstrates how large-scale sequence search outputs can be transformed into geographically interpretable datasets capable of supporting exploratory pathogen surveillance workflows.
+This becomes extremely important in large-scale environmental screening because it provides a lightweight approximation of sequence similarity without requiring expensive full-genome alignment.
+
+Higher k-mer fractions typically indicate:
+- stronger genomic similarity,
+- more complete target representation,
+- or higher-confidence detections.
+
+Lower values may instead reflect:
+- weak environmental traces,
+- fragmented detections,
+- low-abundance sequence presence,
+- or partial overlap with related organisms.
+
+---
+
+## Example Location Interpretation
+
+Below is an example tooltip generated from one mapped detection:
+
+![Zurich Detection Example](images/location.png)
+
+This example represents a metadata-linked environmental detection associated with Zurich, Switzerland.
+
+The tooltip contains several useful attributes:
+- geographic coordinates,
+- total hit count,
+- number of linked samples,
+- regional classification,
+- and average k-mer coverage fraction.
+
+### Example Breakdown
+
+```text
+hits = 5374
+samples = 1
+avg_kmer_fraction = 0.0297
+```
+
+### Interpretation
+
+- The relatively large hit count suggests strong sequence overlap against the target reference.
+- The elevated k-mer coverage fraction indicates a comparatively stronger detection signal relative to weaker environmental traces elsewhere in the dataset.
+- Since the sample count is small, the signal is concentrated within a limited number of linked metadata records rather than distributed across many samples.
+
+Marker size and coloration in the visualization were scaled using these metrics, allowing stronger detections to stand out geographically.
+
+---
+
+## Why This Matters
+
+One of the major goals of the project was demonstrating how large-scale sequence search outputs could be transformed into geographically interpretable datasets.
+
+Rather than manually reviewing thousands of accessions independently, the workflow enabled:
+- rapid environmental signal exploration,
+- geographic clustering analysis,
+- metadata-driven filtering,
+- and visual interpretation of distributed pathogen-related detections.
 
 Importantly, the visualization does **not** imply confirmed outbreaks or active environmental presence. Instead, it represents metadata-linked sequence detections derived from indexed biological datasets.
 
----
 
-## Technical Focus Areas
+## Notes
 
-The project primarily centered around:
-- large-scale sequence search workflows,
-- metadata parsing and normalization,
-- accession relationship handling,
-- geospatial data extraction,
-- coordinate validation,
-- environmental metadata interpretation,
-- and downstream mapping integration.
+This repository serves as a high-level overview of the project workflow and methodology.
 
-The work combined concepts from:
-- bioinformatics,
-- data engineering,
-- metadata systems,
-- and geospatial analysis.
-
----
-
-## Repository Contents
-
-```text
-README.md
-anthrax_map.html
-images/
-└── anthrax_preview.png
+Certain implementation details, datasets, and internal processing steps have intentionally been abstracted.
